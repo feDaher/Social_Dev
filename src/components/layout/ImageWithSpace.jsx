@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const WidthBreak = '600px'
+const WidthBreak = '700px'
 
 const StyledFlex = styled.div`
   display: flex;
@@ -17,14 +17,16 @@ const StyledImage = styled.div`
 `
 const StyledContainer = styled.div`
   background-color: white;
-  padding: 30px;
+  padding: 30px 50px;
   @media (min-width: ${WidthBreak}){
-    width: 100%;
-    min-width: calc${WidthBreak};
+    width: ${WidthBreak};
   }
   @media (max-width: ${WidthBreak}){
     max-width: 100%;
   }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
 
 export default function ImageWithSpace ({ children, image }) {
