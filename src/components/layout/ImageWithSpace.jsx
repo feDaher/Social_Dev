@@ -26,7 +26,13 @@ const StyledContainer = styled.div`
   }
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+
+  &:before, &:after {
+    content: '';
+    margin: auto;
+  }
 `
 
 export default function ImageWithSpace ({ children, image }) {
