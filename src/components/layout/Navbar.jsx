@@ -7,6 +7,13 @@ const StyledNavbar = styled.div`
   display: flex;
   align-items: center;
   padding: 0 100px;
+
+  @media (max-width: 500px){
+    padding: 0 20px;
+  }
+  @media (max-width: 300px){
+    flex-direction: column;
+  }
 `
 
 const StyledLogo = styled.span`
