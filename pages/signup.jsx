@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 
@@ -24,6 +25,23 @@ const Text = styled.p`
 `
 
 function SignupPage () {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [user, setUser] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+ 
+  const handleForm = (event) => {
+    event.preventDefault() //para previnir que a pagina recarregue
+    console.log({
+      firstName,
+      lastName,
+      user,
+      email,
+      password,
+    })
+  }
+  
   return (
     <>
     <ImageWithSpace>
@@ -31,13 +49,13 @@ function SignupPage () {
       <H4>Tudo que acontece no mundo dev, está aqui!</H4>
       <FormContainer>
         <H2>Crie sua conta</H2>
-        <Form>
-          <Input label='Nome' />
-          <Input label='Sobrenome' />
-          <Input label='Usuário' />
-          <Input label='Email' />
-          <Input label='Senha' type='password' />
-          <Button>Criar Conta</Button>
+        <Form onSubmit={handleForm}>
+          <Input label='Nome' onChange={(event) => {setFirstName(event.target.value)}} />
+          <Input label='Sobrenome' onChange={({target}) => {setLastName(target.value)}} /> 
+          <Input label='Usuário' onChange={({ target }) => {setUser(target.value)}} />
+          <Input label='Email' type='email' onChange={({ target }) => {setEmail(target.value)}} />
+          <Input label='Senha' type='password' onChange={({ target }) => {setPassword(target.value)}} />
+          <Button>Cadastrar</Button>
         </Form>
         <Text>Já possui uma conta? <Link href='/login'>Faça seu login</Link></Text>
       </FormContainer>
@@ -47,3 +65,5 @@ function SignupPage () {
 }
 
 export default SignupPage
+//usar o destruction no onChange, pois o target é um parametro do evento(event) entao pode fazer.
+//Eventos importantes para forms e pro react, useState, onChange, onClick e onSubmit.
