@@ -17,13 +17,31 @@ const StyledInput = styled.input`
   padding: 15px 20px;
   box-sizing: border-box;
   border-radius: 10px;
-`
 
-const Input = forwardRef(({label, ...props}, ref) => {
+  ${props => props.error &&  `border: 2px solid ${props.theme.error};`}
+
+  &:focus {
+    outline: none;
+  }
+  `
+
+const ErrorLabel = styled.span`
+  color: ${props => props.theme.error};
+  font-weight: bold;
+  font-size: 14px;
+`
+const errorMessage = {
+  'string.empty': 'Este campo é obrigátorio.',
+  'string.email': 'Por favor, digite um e-mail válido.',
+  'string.min': 'A senha deve conter pelo menos 6(seis) caracteres.'
+}
+
+const Input = forwardRef(({label, error, ...props}, ref) => {
   return (
     <InputContainer>
       <StyledLabel>{label}</StyledLabel>
-      <StyledInput placeholder={label} {...props} ref={ref} />
+      <StyledInput placeholder={label} error={error} {...props} ref={ref} />
+      {error && <ErrorLabel>{errorMessage[error.type] || error.message}</ErrorLabel>}
     </InputContainer>
   )
 })
