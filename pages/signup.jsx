@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { joiResolver } from '@hookform/resolvers/joi'
 import { signupSchema } from '../modules/user/user.schema'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 import ImageWithSpace from '../src/components/layout/ImageWithSpace'
 import H1 from '../src/components/typography/H1'
@@ -10,6 +12,7 @@ import H4 from '../src/components/typography/H4'
 import H2 from '../src/components/typography/H2'
 import Button from '../src/components/inputs/Button'
 import Input from '../src/components/inputs/Inputs'
+
 
 const FormContainer = styled.div`
   margin-top: 60px;
@@ -27,12 +30,24 @@ const Text = styled.p`
 `
 
 function SignupPage () {
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const router = useRouter()
+  const { control, handleSubmit, formState: { errors }, setError } = useForm({
     resolver: joiResolver(signupSchema)
   })
 
-  const handleForm = (data) => {
-    console.log(data)
+  const handleForm = async (data) => {
+    try {
+      const { status } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/signup`, data)
+      if (status === 201) {
+        router.push('/')
+      }
+    } catch (err){
+      if (err.response.data.code === 11000) {
+        setError(err.response.data.duplicatedKey, {
+          type: 'duplicated'
+        })
+      }
+    }
   }
   console.log(errors)
   return (

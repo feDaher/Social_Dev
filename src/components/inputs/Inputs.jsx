@@ -33,7 +33,7 @@ const ErrorLabel = styled.span`
 const errorMessage = {
   'string.empty': 'Este campo é obrigátorio.',
   'string.email': 'Por favor, digite um e-mail válido.',
-  'string.min': 'A senha deve conter pelo menos 6(seis) caracteres.'
+  'duplicated': 'Já existe uma conta registrada com esse valor.'
 }
 
 const Input = ({label, name, control, defaultValue = '', ...props}) => {
