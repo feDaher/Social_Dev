@@ -24,7 +24,7 @@ const TextContainer = styled.div`
 
 const BottomContainer = styled.div`
   display: flex;
-  align-itens: center;
+  align-items: center;
   gap: 5px;
 
   @media (max-width: 500px) {
@@ -34,12 +34,13 @@ const BottomContainer = styled.div`
 
 const BottomText = styled.p`
   flex: 1;
+  align-items: center;
 `
-function CreatePost () {
+function CreatePost ({ username }) {
   return (
     <>
       <PostContainer>
-        <H4><Title>No que você está pensando, @nickname</Title></H4>
+        <H4><Title>No que você está pensando, {username} </Title></H4>
         <TextContainer>
           <Textarea placeholder='Digite sua mensagem' rows='4' />
         </TextContainer>
