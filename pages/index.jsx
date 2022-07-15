@@ -8,6 +8,7 @@ import { withIronSessionSsr} from 'iron-session/next'
 import { ironConfig } from '../lib/middlewares/ironSession'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import useSWR from 'swr'
 
 const Content = styled.div`
   margin: 50px 0;
@@ -29,19 +30,11 @@ const PostContainer = styled.div`
   gap: 20px;
   margin-top: 20px;
 `
+const fetcher = url => axios.get(url).then(res => res.data)
 
 function HomePage ( { user }) {
 
-  const [data, setData] = useState ([])
-
-  const handlePosts = async () => {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/post`)
-    setData(response.data)
-  }
-
-  useEffect (() => {
-    handlePosts()
-  }, [])
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/api/post`, fetcher)
 
   return (
     <>
@@ -55,7 +48,7 @@ function HomePage ( { user }) {
               </RefreshPostsContainer>
               <PostContainer>
                 {
-                data.map(post =>
+                data?.map(post =>
                   <Post 
                     key={post._id}
                     text={post.text}
