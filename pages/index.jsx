@@ -6,6 +6,8 @@ import H3 from '../src/components/typography/H3'
 import Post from '../src/components/cards/Post'
 import { withIronSessionSsr} from 'iron-session/next'
 import { ironConfig } from '../lib/middlewares/ironSession'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Content = styled.div`
   margin: 50px 0;
@@ -29,6 +31,18 @@ const PostContainer = styled.div`
 `
 
 function HomePage ( { user }) {
+
+  const [data, setData] = useState ([])
+
+  const handlePosts = async () => {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/post`)
+    setData(response.data)
+  }
+
+  useEffect (() => {
+    handlePosts()
+  }, [])
+
   return (
     <>
       <Navbar /> 
@@ -40,9 +54,16 @@ function HomePage ( { user }) {
                 <RefreshPost>Carregar novas postagens</RefreshPost>
               </RefreshPostsContainer>
               <PostContainer>
-                <Post> </Post>
-                <Post> </Post>
-                <Post> </Post>
+                {
+                data.map(post =>
+                  <Post 
+                    key={post._id}
+                    text={post.text}
+                    user={post.createdBy.user}
+                    date={post.createdDate}
+                  /> 
+                  )
+                }
               </PostContainer>
         </Container>
       </Content>
