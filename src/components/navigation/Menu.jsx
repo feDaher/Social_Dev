@@ -23,6 +23,7 @@ const StyledOption = styled.div`
 
   :hover{
     background-color: ${props => props.theme.inputBackground};
+    border-radius: 5px;
   }
 `
 
