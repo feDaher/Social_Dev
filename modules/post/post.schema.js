@@ -7,6 +7,11 @@ export const createPostSchema = Joi.object({
   text: Joi.string().required().max(256)
 })
 
-export const deletePostSchema = Joi.objectId({
+export const deletePostSchema = Joi.object({
   id: Joi.objectId().required()
+})
+
+export const editPostSchema = Joi.object({
+  id: Joi.objectId().required(),
+  text: Joi.string().required().max(256)
 })
