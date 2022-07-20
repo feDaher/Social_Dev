@@ -5,6 +5,7 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { signupSchema } from '../modules/user/user.schema'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import ImageWithSpace from '../src/components/layout/ImageWithSpace'
 import H1 from '../src/components/typography/H1'
@@ -30,6 +31,9 @@ const Text = styled.p`
 `
 
 function SignupPage () {
+
+  const [load, setLoad] = useState(false)
+
   const router = useRouter()
   const { control, handleSubmit, formState: { errors }, setError } = useForm({
     resolver: joiResolver(signupSchema)
@@ -37,17 +41,18 @@ function SignupPage () {
 
   const handleForm = async (data) => {
     try {
+      setLoad(true)
       const { status } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/signup`, data)
       if (status === 201) {
         router.push('/')
-      }
+      } setLoad(false)
     } catch (err){
       if (err.response.data.code === 11000) {
         setError(err.response.data.duplicatedKey, {
           type: 'duplicated'
         })
-      }
-    }
+      } setLoad(false)
+    } 
   }
   console.log(errors)
   return (
@@ -63,7 +68,7 @@ function SignupPage () {
           <Input label='Usuário' name='user' control={control} />
           <Input label='Email' type='email' name='email' control={control} />
           <Input label='Senha' type='password' name='password' control={control} />
-          <Button type='submit' disabled={Object.keys(errors).length > 0 }>Cadastrar</Button>
+          <Button loading={load} type='submit' disabled={Object.keys(errors).length > 0 }>Cadastrar</Button>
         </Form>
         <Text>Já possui uma conta? <Link href='/login'>Faça seu login</Link></Text>
       </FormContainer>

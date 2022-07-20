@@ -7,6 +7,7 @@ import {joiResolver} from '@hookform/resolvers/joi'
 import { createPostSchema} from '../../../modules/post/post.schema'
 import axios from 'axios'
 import { useSWRConfig } from 'swr'
+import { useState } from 'react'
 
 const PostContainer = styled.div`
   background-color: ${props => props.theme.white};
@@ -42,6 +43,9 @@ const BottomText = styled.p`
   align-items: center;
 `
 function CreatePost ({ username }) {
+  
+  const [load, setLoad] = useState(false)
+
   const { mutate } = useSWRConfig()
   const { control, handleSubmit, formState: {isValid}, reset} = useForm ({
     resolver: joiResolver(createPostSchema),
@@ -49,12 +53,14 @@ function CreatePost ({ username }) {
   })
 
   const onSubmit = async (data) => {
+    setLoad(true)
     const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/post`, data)
     if (response.status === 201) {
       reset()
       mutate( 
         `${process.env.NEXT_PUBLIC_API_URL}/api/post`
       )
+      setLoad(false)
     }
   }
 
@@ -69,7 +75,7 @@ function CreatePost ({ username }) {
           </TextContainer>
           <BottomContainer>
             <BottomText>A sua mensagem será pública</BottomText>
-            <Button disabled={!isValid}>Postar mensagem</Button>
+            <Button loading={load} disabled={!isValid}>Postar mensagem</Button>
           </BottomContainer>
         </form>
       </PostContainer>

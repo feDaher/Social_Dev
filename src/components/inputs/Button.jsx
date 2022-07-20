@@ -18,14 +18,17 @@ const StyledButton = styled.button`
     background-color: ${props => props.theme.disabled};
   }
 `
-
+const StyledImg = styled.img`
+  width: 20px;
+  padding: 0px 60px;
+`
 const Button = ({ children, loading, disabled, ...props }) => {
   return (
     <StyledButton 
     disabled={disabled || loading}
     {...props}
     > 
-      {loading && <img src="./loading.svg" width="20px" />}
+      {loading && <StyledImg src="./loading.svg" />}
       {!loading && children}
     </StyledButton>
   )
